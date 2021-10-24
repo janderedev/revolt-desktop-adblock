@@ -69,7 +69,9 @@
     }
   },
   "dependencies": {
+    "@cliqz/adblocker-electron": "^1.23.0",
     "auto-launch": "^5.0.5",
+    "cross-fetch": "^3.1.4",
     "discord-rpc": "^4.0.1",
     "electron-store": "^8.0.0",
     "electron-updater": "^4.3.9",

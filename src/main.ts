@@ -1,6 +1,7 @@
 import type { ConfigData } from './app';
 
-import { app, BrowserWindow, shell, ipcMain, nativeImage } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, nativeImage, session } from 'electron';
+import { ElectronBlocker } from '@cliqz/adblocker-electron';
 import windowStateKeeper from 'electron-window-state';
 import { RelaunchOptions } from 'electron/main';
 import { URL } from 'url';
@@ -49,6 +50,12 @@ function createWindow() {
 	
 	mainWindowState.manage(mainWindow)
 	mainWindow.loadURL(getBuildURL())
+
+	console.info('Loading ad blocker.');
+	ElectronBlocker.fromPrebuiltAdsAndTracking(require('cross-fetch')).then((blocker) => {
+		blocker.enableBlockingInSession(session.defaultSession);
+		console.info('Ad blocker loaded!');
+	});
 
 	mainWindow.webContents.on('did-finish-load', () =>
 		mainWindow.webContents.send('config', getConfig())
